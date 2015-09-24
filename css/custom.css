@@ -1,0 +1,31 @@
+body {
+  padding-top: 70px;
+}
+
+#sample-tile{
+	text-align: center;
+	background-color: #fff;
+}
+
+.navbar-form .input-group {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+
+    .form-control,
+    .input-group-btn {
+        float: left;
+    }
+}
+
+.colorpicker-element{
+	width: 180px;
+}
+
+#panel-1 {
+	margin-top: 480px;
+}
+
+.tile-panel{
+	display: none;
+}
