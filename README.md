@@ -1,6 +1,8 @@
 # carcassonne-shading
 This is some JS that manipulates SVG files used to print or laser-cut tiles for the board game Carcassonne.
 
+[![CC BY-NC-SA license](https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 ### Explore it here (Chrome only, for now):
 #### https://tomkinsc.github.io/carcassonne-shading/
 
