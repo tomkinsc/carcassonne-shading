@@ -19,3 +19,7 @@ This was helpful because beyond the laser power settings, it took some fiddling 
 The different regions are segmented by their colors in the original files, which were created via Inkscape with outline vector lines over bitmap fill images. The lines were drawn by hand by my girlfriend and I using Inkscape, based on a purchased copy of Carcassonne we have. The images were made by rendering the outline SVGs to PNGs, filling in regions using GIMP, then reimporting them into Inkscape, and overlaying the vector outlines.
 
 For meeple, she laboriously cut them out by hand from Sculpey clay. A cookie cutter would have been ideal but it took her less time to cut the figures than for me to bend copper flashing into the shape of a person or to devise a way to extrude the figures.
+
+### Credit
+
+Many thanks to Klaus-Jürgen Wrede for making the original [Carcassonne board game](https://en.wikipedia.org/wiki/Carcassonne_(board_game)). If you use artwork from this repository, please consider buying a copy of the original board game.
