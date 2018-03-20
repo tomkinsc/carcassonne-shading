@@ -1,5 +1,7 @@
 var baseImageColors = {
 	detailLineColor : "#0000ff",
+	cutLineColor 	: "#000000",
+	rasterizedLines : [0,0,0],
 	grass 			: [160,160,160],
 	roadAndBuilding : [255,255,255],
 	roofs 			: [234,234,234],
@@ -9,6 +11,8 @@ var baseImageColors = {
 
 var colorSettings = {
 	detailLineColor : "#0000ff",
+	cutLineColor 	: "#ff0000",
+	rasterizedLines : [255,255,255],
 	grass 			: [160,160,160],
 	roadAndBuilding : [255,255,255],
 	roofs 			: [234,234,234],
@@ -18,29 +22,37 @@ var colorSettings = {
 
 
 function updateColors(elementToUpdate){
-	elementToUpdate.find("svg").find("path").css({stroke:colorSettings.detailLineColor});
+	elementToUpdate.find("svg").find('path').css({stroke:colorSettings.detailLineColor});
+	elementToUpdate.find("svg").find('rect').css({stroke:colorSettings.cutLineColor});
 	elementToUpdate.find("svg").find("image").each(function(index){
+		var svgImageElem = $(this);
 		var image = new Image();
-		image.src = $(this).attr("xlink:href");
-		var canvas = convertImageToCanvas(image);
-		var canvasContext = canvas.getContext("2d");
+		image.src = String(svgImageElem.attr("xlink:href"));
 
-        var imageData = canvasContext.getImageData(0, 0, image.width, image.height);
-        var data = imageData.data;
-        // += 4 since this is RGBA
-        for(var i = 0; i < data.length; i += 4) {
-            var newColors = recolor( [data[i], data[i+1], data[i+2]] );
-            // red
-            data[i] = newColors[0];
-            // green
-            data[i + 1] = newColors[1];
-            // blue
-            data[i + 2] = newColors[2];
-            // opacity
-            data[i + 3] = 255;
-        }
-        canvasContext.putImageData(imageData, 0, 0);
-        $(this).attr("xlink:href", convertCanvasToImage(canvas).src);
+		image.onload = function(){
+			var canvas = convertImageToCanvas(image);
+			var canvasContext = canvas.getContext("2d");
+
+			var imageWidth = image.width;
+			var imageHeight = image.height;
+
+	        var imageData = canvasContext.getImageData(0, 0, image.width, image.height);
+	        var data = imageData.data;
+	        // += 4 since this is RGBA
+	        for(var i = 0; i < data.length; i += 4) {
+	            var newColors = recolor( [data[i], data[i+1], data[i+2]] );
+	            // red
+	            data[i] = newColors[0];
+	            // green
+	            data[i + 1] = newColors[1];
+	            // blue
+	            data[i + 2] = newColors[2];
+	            // opacity
+	            data[i + 3] = 255;
+	        }
+	        canvasContext.putImageData(imageData, 0, 0);
+	        svgImageElem.attr("xlink:href", canvas.toDataURL("image/png"));
+    	}
 	});
 };
 	
@@ -51,30 +63,26 @@ function recolor(colorTuple){
 		colorTuple[1] == baseImageColors.castleSoil[1] &&
 		colorTuple[2] == baseImageColors.castleSoil[2]){
 		colorTupleToSet = colorSettings.castleSoil;
-	}
-
-	if (colorTuple[0] == baseImageColors.grass[0] && 
+	} else if (colorTuple[0] == baseImageColors.grass[0] && 
 		colorTuple[1] == baseImageColors.grass[1] &&
 		colorTuple[2] == baseImageColors.grass[2]){
 		colorTupleToSet = colorSettings.grass;
-	}
-
-	if (colorTuple[0] == baseImageColors.roadAndBuilding[0] && 
+	} else if (colorTuple[0] == baseImageColors.roadAndBuilding[0] && 
 		colorTuple[1] == baseImageColors.roadAndBuilding[1] &&
 		colorTuple[2] == baseImageColors.roadAndBuilding[2]){
 		colorTupleToSet = colorSettings.roadAndBuilding;
-	}
-
-	if (colorTuple[0] == baseImageColors.roofs[0] && 
+	} else if (colorTuple[0] == baseImageColors.roofs[0] && 
 		colorTuple[1] == baseImageColors.roofs[1] &&
 		colorTuple[2] == baseImageColors.roofs[2]){
 		colorTupleToSet = colorSettings.roofs;
-	}
-
-	if (colorTuple[0] == baseImageColors.shrub[0] && 
+	} else if (colorTuple[0] == baseImageColors.shrub[0] && 
 		colorTuple[1] == baseImageColors.shrub[1] &&
 		colorTuple[2] == baseImageColors.shrub[2]){
 		colorTupleToSet = colorSettings.shrub;
+	} else if (colorTuple[0] == baseImageColors.rasterizedLines[0] && 
+		colorTuple[1] == baseImageColors.rasterizedLines[1] &&
+		colorTuple[2] == baseImageColors.rasterizedLines[2]){
+		colorTupleToSet = colorSettings.rasterizedLines;
 	}
 
 	return colorTupleToSet;
@@ -112,6 +120,13 @@ $(document).ready(function(){
 	$('#edgesColorpicker').colorpicker({"format":"rgb", "color": "rgb(" + baseImageColors.detailLineColor.toString() + ")"}).on('changeColor', function(ev){
 		var c = ev.color.toHex();
 		colorSettings.detailLineColor = c;
+	  	loadSampleTile();
+	});
+
+	// the default is different because we change the default at the start
+	$('#cutLinesColorpicker').colorpicker({"format":"rgb", "color": "rgb(" + colorSettings.cutLineColor.toString() + ")"}).on('changeColor', function(ev){
+		var c = ev.color.toHex();
+		colorSettings.cutLineColor = c;
 	  	loadSampleTile();
 	});
 
@@ -166,12 +181,12 @@ function convertImageToCanvas(image) {
 	var canvas = document.createElement("canvas");
 	canvas.width = image.width;
 	canvas.height = image.height;
-	    if(image.id) {
-	        canvas.id = image.id;
-	    }
-	    if(image.className) {
-	        canvas.className = image.className;
-	    }
+    if(image.id) {
+        canvas.id = image.id;
+    }
+    if(image.className) {
+        canvas.className = image.className;
+    }
 	canvas.getContext("2d").drawImage(image, 0, 0);
 
 	return canvas;
