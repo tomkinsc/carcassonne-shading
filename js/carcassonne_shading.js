@@ -10,20 +10,20 @@ var baseImageColors = {
 };
 
 var colorSettings = {
-	detailLineColor : "#0000ff",
-	cutLineColor 	: "#ff0000",
+	detailLineColor : "#ff0000",
+	cutLineColor 	: "#0000ff",
 	rasterizedLines : [255,255,255],
-	grass 			: [160,160,160],
+	grass 			: [255,255,255],
 	roadAndBuilding : [255,255,255],
-	roofs 			: [234,234,234],
-	castleSoil 		: [120,120,120],
-	shrub 			: [25,25,25]
+	roofs 			: [200,200,200],
+	castleSoil 		: [100,100,100],
+	shrub 			: [150,150,150]
 };
 
 
 function updateColors(elementToUpdate){
-	elementToUpdate.find("svg").find('path').css({stroke:colorSettings.detailLineColor});
-	elementToUpdate.find("svg").find('rect').css({stroke:colorSettings.cutLineColor});
+	elementToUpdate.find("svg").find('path').css({stroke:colorSettings.detailLineColor, "stroke-width":"0.04mm"});
+	elementToUpdate.find("svg").find('rect').css({stroke:colorSettings.cutLineColor, "stroke-width":"0.04mm"});
 	elementToUpdate.find("svg").find("image").each(function(index){
 		var svgImageElem = $(this);
 		var image = new Image();
