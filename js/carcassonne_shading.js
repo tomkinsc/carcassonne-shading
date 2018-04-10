@@ -117,7 +117,7 @@ $(document).ready(function(){
 	  	loadSampleTile();
 	});
 
-	$('#edgesColorpicker').colorpicker({"format":"rgb", "color": "rgb(" + baseImageColors.detailLineColor.toString() + ")"}).on('changeColor', function(ev){
+	$('#edgesColorpicker').colorpicker({"format":"rgb", "color": "rgb(" + colorSettings.detailLineColor.toString() + ")"}).on('changeColor', function(ev){
 		var c = ev.color.toHex();
 		colorSettings.detailLineColor = c;
 	  	loadSampleTile();
